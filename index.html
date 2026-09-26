@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+<meta name="theme-color" content="#1f2d27" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="What Matters" />
+<meta name="description" content="A shared values conversation for two." />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icon-192.png" />
+<title>What Matters</title>
+<style>
+:root{--paper:#f5f0e8;--cream:#fffdf8;--ink:#1f2723;--forest:#1f2d27;--sage:#87998e;--brass:#b28b57;--rose:#a66760;--line:rgba(31,39,35,.13);--shadow:0 22px 65px rgba(31,39,35,.14);--radius:28px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;min-height:100%;background:var(--paper);color:var(--ink)}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:100svh}.app{min-height:100svh;background:radial-gradient(circle at 12% 8%,rgba(178,139,87,.11),transparent 25rem),radial-gradient(circle at 88% 88%,rgba(31,45,39,.08),transparent 28rem),var(--paper);padding:max(20px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) max(22px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left))}.shell{width:min(100%,650px);margin:auto;min-height:calc(100svh - 42px);display:flex;flex-direction:column}.brand{display:flex;justify-content:space-between;align-items:center;min-height:38px;margin-bottom:18px}.brandmark,h1,h2,h3,.serif{font-family:Iowan Old Style,Baskerville,Georgia,serif}.brandmark{font-size:18px;font-weight:600}.ghost{border:0;background:transparent;color:var(--ink);opacity:.62;padding:9px 11px;border-radius:999px}.ghost:active{background:rgba(31,39,35,.06)}.screen{display:none;flex:1;animation:fade .3s ease}.screen.active{display:flex;flex-direction:column}@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}h1,h2,h3,p{margin-top:0}h1,h2{font-weight:500;letter-spacing:-.025em}h1{font-size:clamp(50px,13vw,78px);line-height:.94;margin-bottom:22px}h2{font-size:clamp(34px,8vw,49px);line-height:1.04;margin-bottom:14px}.eyebrow{text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:800;opacity:.53;margin-bottom:14px}.lead{font-size:18px;line-height:1.55;color:rgba(31,39,35,.76);max-width:560px}.muted{color:rgba(31,39,35,.62);line-height:1.55}.hero{justify-content:center;padding:6vh 2px 4vh}.hero-art{height:170px;margin:24px 0 28px;position:relative}.mini-card{position:absolute;width:138px;height:164px;border-radius:22px;background:var(--cream);border:1px solid rgba(31,39,35,.08);box-shadow:var(--shadow);display:flex;align-items:flex-end;padding:18px;font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:22px}.mini-card:nth-child(1){left:calc(50% - 150px);top:14px;transform:rotate(-9deg)}.mini-card:nth-child(2){left:calc(50% - 69px);top:0;z-index:2}.mini-card:nth-child(3){left:calc(50% + 12px);top:14px;transform:rotate(9deg)}.mini-card:before{content:"";position:absolute;left:18px;top:18px;width:24px;height:2px;background:var(--brass)}button,input{font:inherit}.primary,.secondary{border:0;border-radius:999px;padding:16px 22px;min-height:54px;font-weight:800;letter-spacing:.01em}.primary{background:var(--forest);color:white;box-shadow:0 12px 28px rgba(31,45,39,.18)}.secondary{background:rgba(31,39,35,.07);color:var(--ink)}.primary:disabled,.secondary:disabled{opacity:.35}.button-row{display:flex;gap:9px;flex-wrap:wrap}.button-row>*{flex:1;min-width:145px}.panel{background:rgba(255,253,248,.7);border:1px solid rgba(31,39,35,.09);border-radius:var(--radius);padding:22px;box-shadow:0 12px 36px rgba(31,39,35,.05)}label{display:block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.57;margin:0 0 7px}input{width:100%;border:1px solid rgba(31,39,35,.13);background:rgba(255,255,255,.72);color:var(--ink);border-radius:16px;padding:14px 15px;outline:none}input:focus{border-color:rgba(31,45,39,.42);box-shadow:0 0 0 3px rgba(31,45,39,.07)}.field{margin-bottom:16px}.tiny{font-size:12px;line-height:1.45;opacity:.6}.tabs{display:grid;grid-template-columns:1fr 1fr;background:rgba(31,39,35,.07);border-radius:999px;padding:4px;margin-bottom:20px}.tab{border:0;background:transparent;border-radius:999px;padding:11px;font-weight:800;color:rgba(31,39,35,.55)}.tab.active{background:var(--cream);color:var(--ink);box-shadow:0 4px 12px rgba(31,39,35,.08)}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase}.room-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:36px;letter-spacing:.15em;margin:8px 0 18px}.chip-list{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.chip{border:1px solid var(--line);background:rgba(255,255,255,.58);border-radius:999px;padding:8px 11px;font-size:13px}.status-list{display:grid;gap:9px;margin:16px 0}.status-person{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);background:rgba(255,255,255,.45);padding:13px 14px;border-radius:17px}.status-dot{width:8px;height:8px;border-radius:50%;background:var(--brass);display:inline-block;margin-right:8px}.status-dot.done{background:var(--forest)}.status-text{font-size:12px;opacity:.57}.game-head{display:grid;grid-template-columns:auto 1fr auto;gap:13px;align-items:center;margin-bottom:10px}.round-badge{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.57}.progress{height:5px;background:rgba(31,39,35,.09);border-radius:999px;overflow:hidden}.progress span{display:block;height:100%;width:0;background:var(--brass);transition:width .2s}.counter{font-size:13px;opacity:.57;font-variant-numeric:tabular-nums}.round-copy{text-align:center;margin:8px 0 14px}.round-copy strong{display:block;font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:25px;font-weight:500}.round-copy span{display:block;font-size:13px;opacity:.58;margin-top:3px}.deck-wrap{position:relative;flex:1;min-height:420px;display:grid;place-items:center;padding:4px 0 14px}.behind{position:absolute;width:min(94%,440px);height:min(64vh,520px);min-height:390px;border-radius:32px;background:rgba(255,253,248,.55);border:1px solid rgba(31,39,35,.06);transform:translateY(10px) scale(.96)}.value-card{position:relative;z-index:2;width:min(94%,440px);height:min(64vh,520px);min-height:390px;background:linear-gradient(145deg,#fffdfa,#f8f1e7);border-radius:32px;border:1px solid rgba(31,39,35,.08);box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between;padding:28px;touch-action:none;user-select:none;transition:transform .22s ease,opacity .22s ease}.value-card.dragging{transition:none}.card-top{display:flex;justify-content:space-between;align-items:center}.ordinal{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.42}.spark{width:34px;height:34px;border-radius:50%;border:1px solid rgba(178,139,87,.32);display:grid;place-items:center;color:var(--brass)}.value-title{font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:clamp(44px,12vw,64px);line-height:.96;font-weight:500;letter-spacing:-.035em;margin:10px 0 18px;word-break:break-word}.value-desc{font-size:18px;line-height:1.5;color:rgba(31,39,35,.68);max-width:350px}.card-foot{display:flex;justify-content:space-between;align-items:end;gap:14px}.prompt{font-size:12px;line-height:1.4;max-width:230px;opacity:.45}.gesture{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.36}.decision-label{position:absolute;top:28px;z-index:3;border-radius:999px;padding:9px 13px;font-weight:900;font-size:12px;letter-spacing:.10em;text-transform:uppercase;opacity:0}.decision-label.release{left:22px;color:var(--rose);border:1px solid rgba(166,103,96,.35);transform:rotate(-5deg)}.decision-label.keep{right:22px;color:var(--forest);border:1px solid rgba(31,45,39,.35);transform:rotate(5deg)}.controls{display:grid;grid-template-columns:55px 1fr 1fr;gap:9px;align-items:center}.round-btn{width:55px;height:55px;border-radius:50%;border:1px solid var(--line);background:rgba(255,253,248,.68);font-size:20px}.choice{min-height:55px;border-radius:999px;border:1px solid rgba(31,39,35,.09);font-weight:800;background:rgba(255,253,248,.74);color:var(--ink)}.choice.keep{background:var(--forest);color:white}.summary{justify-content:center;text-align:center;padding:5vh 2px}.number{font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:96px;line-height:.9;color:var(--forest);margin:8px 0 18px}.preview-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin:20px 0 26px}.preview-chips span{border:1px solid var(--line);background:rgba(255,255,255,.55);padding:8px 11px;border-radius:999px;font-size:13px}.restore-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:18px 0}.restore-card{border:1px solid var(--line);background:rgba(255,255,255,.57);border-radius:18px;padding:13px;text-align:left}.restore-card.selected{background:var(--forest);color:#fff}.restore-word{font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:20px}.waiting{justify-content:center;text-align:center;padding:6vh 4px}.seal{width:82px;height:82px;border-radius:50%;margin:0 auto 24px;border:1px solid rgba(178,139,87,.45);display:grid;place-items:center;color:var(--brass);font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:34px;background:rgba(255,253,248,.65)}.reveal{justify-content:center;text-align:center;padding:4vh 0}.final-kicker{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;opacity:.48;margin-bottom:10px}.final-name{font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:43px;margin-bottom:22px}.final-three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.final-card{min-height:220px;border-radius:24px;padding:18px 14px;background:linear-gradient(145deg,#fffdfa,#eee5d7);border:1px solid rgba(31,39,35,.08);box-shadow:0 14px 32px rgba(31,39,35,.09);display:flex;flex-direction:column;justify-content:space-between;text-align:left}.final-card:nth-child(2){transform:translateY(-8px)}.final-card .num{font-size:11px;opacity:.36}.final-card .word{font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:clamp(22px,6vw,34px);line-height:1;word-break:break-word}.final-card .small-desc{font-size:11px;line-height:1.35;opacity:.52}.conversation{margin-top:24px;text-align:left;background:rgba(255,253,248,.57);border:1px solid var(--line);border-radius:24px;padding:20px}.conversation h3{font-size:24px;font-weight:500;margin-bottom:10px}.conversation ol{margin:0;padding-left:20px;color:rgba(31,39,35,.72)}.conversation li{margin:9px 0;line-height:1.45}.person-set{text-align:left;border-top:1px solid var(--line);padding:16px 0}.person-set:first-child{border-top:0}.person-label{font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:25px;margin-bottom:11px}.three-words{display:flex;gap:8px;flex-wrap:wrap}.three-words span{background:rgba(255,253,248,.7);border:1px solid var(--line);border-radius:999px;padding:10px 13px;font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:19px}.overlap{margin-top:18px;border-radius:18px;padding:14px;background:rgba(178,139,87,.10);font-size:14px;line-height:1.5;text-align:left}.screenshot-mode .brand,.screenshot-mode .screen .final-actions,.screenshot-mode .conversation{display:none!important}.screenshot-note{display:none;font-size:12px;opacity:.5;margin-top:18px}.screenshot-mode .screenshot-note{display:block}.final-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:24px}.final-actions>*{flex:1;min-width:140px}.toast{position:fixed;left:50%;bottom:max(22px,env(safe-area-inset-bottom));transform:translate(-50%,16px);background:var(--ink);color:white;padding:11px 14px;border-radius:999px;font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:30;white-space:nowrap}.toast.show{opacity:1;transform:translate(-50%,0)}.config-warning{border-left:3px solid var(--brass);padding:12px 14px;background:rgba(178,139,87,.10);border-radius:0 14px 14px 0;font-size:13px;line-height:1.5;margin:18px 0}.hidden{display:none!important}@media(max-width:430px){.controls{grid-template-columns:48px 1fr 1fr;gap:7px}.round-btn{width:48px;height:48px}.choice{min-height:50px}.final-card{min-height:190px;padding:15px 10px}.final-card .small-desc{display:none}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app"><main class="shell">
+<header class="brand"><div class="brandmark">What Matters</div><button class="ghost" id="leaveBtn" hidden>Leave room</button></header>
+
+<section class="screen active hero" id="welcome">
+  <div class="eyebrow">A values conversation for two</div><h1>What matters<br>most?</h1>
+  <p class="lead">Sort independently, on your own phones. Keep anything that still feels important. The deck only gets smaller when <em>you</em> make it smaller.</p>
+  <div class="hero-art" aria-hidden="true"><div class="mini-card">Curiosity</div><div class="mini-card">Family</div><div class="mini-card">Courage</div></div>
+  <button class="primary" id="enterBtn">Enter a shared room</button>
+  <p class="tiny" style="margin:14px 4px 0">No scoring. No forced quota. Your final three are shared only with the other person in your room.</p>
+</section>
+
+<section class="screen" id="entry">
+  <div class="eyebrow">Your device, your choices</div><h2>Join each other.</h2>
+  <p class="muted">One person creates a room. The other joins it from their own device using the code.</p>
+  <div class="tabs"><button class="tab active" data-mode="create">Create room</button><button class="tab" data-mode="join">Join room</button></div>
+  <div class="panel">
+    <div class="field"><label for="myName">Your name</label><input id="myName" maxlength="40" autocomplete="name" placeholder="Your name" /></div>
+    <div class="field hidden" id="codeField"><label for="joinCode">Room code</label><input id="joinCode" class="code" maxlength="8" autocomplete="off" placeholder="ABCD2345" /></div>
+    <button class="primary" id="roomAction" style="width:100%">Create my room</button>
+    <div class="config-warning hidden" id="configWarning">Cross-device rooms need Firebase configured. You can still preview the sorting flow locally, or follow the included README to connect the free realtime backend.</div>
+    <button class="secondary hidden" id="previewBtn" style="width:100%;margin-top:8px">Preview sorting locally</button>
+  </div>
+</section>
+
+<section class="screen" id="lobby">
+  <div class="eyebrow">Shared room</div><h2 id="lobbyHello">You’re in.</h2>
+  <div class="panel">
+    <label>Room code</label><div class="room-code" id="roomCodeText">ABCD2345</div>
+    <div class="button-row"><button class="secondary" id="copyCode">Copy code</button><button class="secondary" id="shareRoom">Share link</button></div>
+    <div class="status-list" id="memberList"></div>
+  </div>
+  <div style="height:16px"></div>
+  <div class="panel">
+    <label for="customValue">Any value the deck might miss?</label>
+    <div style="display:flex;gap:8px"><input id="customValue" maxlength="28" autocomplete="off" placeholder="e.g. Playfulness"/><button class="secondary" id="addCustom" style="flex:0 0 auto;padding-inline:16px">Add</button></div>
+    <div class="chip-list" id="customList"></div><p class="tiny" style="margin:10px 0 0">Optional and private to your own sort.</p>
+  </div>
+  <div style="height:16px"></div><button class="primary" id="startSort">Start my sort</button>
+</section>
+
+<section class="screen" id="game">
+  <div class="game-head"><div class="round-badge" id="roundBadge">Round 1</div><div class="progress"><span id="progressBar"></span></div><div class="counter" id="cardCounter">1 / 48</div></div>
+  <div class="round-copy"><strong id="roundGoal">Keep whatever still matters</strong><span id="keepCount">0 kept so far</span></div>
+  <div class="deck-wrap"><div class="behind"></div><article class="value-card" id="valueCard">
+    <div class="decision-label release" id="releaseLabel">Let go</div><div class="decision-label keep" id="keepLabel">Keep</div>
+    <div class="card-top"><div class="ordinal" id="cardOrdinal">Value 01</div><div class="spark">✦</div></div>
+    <div><div class="value-title" id="valueTitle">Curiosity</div><div class="value-desc" id="valueDesc">To keep discovering, questioning and learning.</div></div>
+    <div class="card-foot"><div class="prompt">There is no limit on how many you can keep this round.</div><div class="gesture">← release · keep →</div></div>
+  </article></div>
+  <div class="controls"><button class="round-btn" id="undoBtn" aria-label="Undo">↶</button><button class="choice" id="releaseBtn">← Let go</button><button class="choice keep" id="keepBtn">Keep →</button></div>
+</section>
+
+<section class="screen summary" id="roundEnd">
+  <div class="eyebrow" id="roundEndEyebrow">Round complete</div><div class="number" id="roundEndNumber">18</div>
+  <h2 id="roundEndTitle">Still important.</h2><p class="lead" id="roundEndCopy" style="margin-left:auto;margin-right:auto">These are the values you kept. They become the entire next round.</p>
+  <div class="preview-chips" id="roundPreview"></div><button class="primary" id="continueRound">Go through these again</button>
+</section>
+
+<section class="screen" id="restore">
+  <div class="eyebrow">You went below three</div><h2>Bring a few back.</h2>
+  <p class="muted" id="restoreCopy">You kept two. Tap any value from this round that you want back in play. Once you have at least three, you can continue.</p>
+  <div class="restore-grid" id="restoreGrid"></div><button class="primary" id="restoreContinue" disabled>Continue with 2</button>
+</section>
+
+<section class="screen waiting" id="waiting">
+  <div class="seal">✓</div><div class="eyebrow">Your three are locked in</div><h2 id="waitingTitle">You’re finished.</h2>
+  <p class="lead" id="waitingCopy" style="margin-left:auto;margin-right:auto">Your partner can keep sorting on their own device.</p>
+  <div class="panel" style="width:100%;text-align:left;margin:12px 0 18px"><div class="status-list" id="waitingMembers"></div></div>
+  <button class="primary" id="viewResults" disabled>Waiting for both of you…</button>
+</section>
+
+<section class="screen reveal" id="results">
+  <div class="final-kicker">What matters to us</div><div class="final-name">Side by side.</div>
+  <div id="resultsGrid"></div><div class="overlap" id="overlapBox"></div>
+  <div class="conversation"><h3>Three questions worth lingering on</h3><ol><li>What does each value look like on an ordinary Tuesday?</li><li>Where do your values naturally support one another — and where might they pull differently?</li><li>What is one small thing you could do this month that honours something on the other person’s list?</li></ol></div>
+  <div class="screenshot-note">Screenshot this screen to keep the moment.</div>
+  <div class="final-actions"><button class="secondary" id="shotBtn">Screenshot mode</button><button class="primary" id="backWaiting">Back to room</button></div>
+</section>
+</main></div>
+<div class="toast" id="toast">Copied</div>
+<script type="module" src="./app.js"></script>
+</body></html>
