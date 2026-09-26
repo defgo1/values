@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="theme-color" content="#1f2d27" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="What Matters" />
+  <meta name="description" content="A private values conversation for two." />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+  <title>What Matters</title>
+  <style>
+    :root{
+      --paper:#f5f0e8;
+      --paper-2:#ebe3d8;
+      --ink:#1f2723;
+      --forest:#1f2d27;
+      --forest-2:#34473d;
+      --sage:#87998e;
+      --brass:#b28b57;
+      --rose:#a66760;
+      --cream:#fffdf8;
+      --line:rgba(31,39,35,.14);
+      --shadow:0 20px 60px rgba(31,39,35,.15);
+      --radius:28px;
+    }
+
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{margin:0;min-height:100%;background:var(--paper);color:var(--ink)}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      min-height:100svh;
+      overflow-x:hidden;
+    }
+    button,input,textarea{font:inherit}
+    button{cursor:pointer}
+    .app{
+      min-height:100svh;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(178,139,87,.11), transparent 26rem),
+        radial-gradient(circle at 90% 90%, rgba(52,71,61,.08), transparent 28rem),
+        var(--paper);
+      padding:max(20px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right))
+              max(20px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));
+    }
+    .shell{width:min(100%,640px);margin:0 auto;min-height:calc(100svh - 40px);display:flex;flex-direction:column}
+    .brand{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;min-height:38px}
+    .brandmark{
+      font-family:Iowan Old Style,Baskerville,Georgia,serif;
+      font-size:18px;letter-spacing:.02em;font-weight:600;
+    }
+    .ghost{
+      border:0;background:transparent;color:var(--ink);opacity:.62;padding:8px 10px;border-radius:999px;
+    }
+    .ghost:hover{background:rgba(31,39,35,.06);opacity:1}
+
+    .screen{display:none;flex:1;animation:fade .35s ease}
+    .screen.active{display:flex;flex-direction:column}
+    @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+    h1,h2,h3,p{margin-top:0}
+    h1,h2,.serif{
+      font-family:Iowan Old Style,Baskerville,Georgia,serif;
+      font-weight:500;
+      letter-spacing:-.02em;
+    }
+    h1{font-size:clamp(48px,13vw,76px);line-height:.95;margin-bottom:22px}
+    h2{font-size:clamp(34px,8vw,48px);line-height:1.05;margin-bottom:14px}
+    .eyebrow{
+      text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:700;opacity:.55;margin-bottom:14px;
+    }
+    .lead{font-size:18px;line-height:1.55;color:rgba(31,39,35,.78);max-width:530px}
+    .muted{color:rgba(31,39,35,.62);line-height:1.5}
+    .hero{justify-content:center;padding:7vh 2px 4vh}
+    .hero-art{
+      width:100%;height:170px;margin:24px 0 28px;position:relative;
+    }
+    .mini-card{
+      position:absolute;width:138px;height:164px;border-radius:22px;background:var(--cream);
+      border:1px solid rgba(31,39,35,.08);box-shadow:var(--shadow);
+      display:flex;align-items:flex-end;padding:18px;font-family:Iowan Old Style,Baskerville,Georgia,serif;
+      font-size:22px;
+    }
+    .mini-card:nth-child(1){left:calc(50% - 150px);top:14px;transform:rotate(-9deg)}
+    .mini-card:nth-child(2){left:calc(50% - 69px);top:0;z-index:2}
+    .mini-card:nth-child(3){left:calc(50% + 12px);top:14px;transform:rotate(9deg)}
+    .mini-card:before{
+      content:"";position:absolute;left:18px;top:18px;width:24px;height:2px;background:var(--brass);border-radius:2px;
+    }
+
+    .primary,.secondary{
+      border:0;border-radius:999px;padding:16px 22px;font-weight:700;letter-spacing:.01em;
+      min-height:54px;transition:transform .15s ease,opacity .15s ease,box-shadow .15s ease;
+    }
+    .primary{background:var(--forest);color:white;box-shadow:0 12px 28px rgba(31,45,39,.20)}
+    .primary:active,.secondary:active{transform:scale(.985)}
+    .primary:disabled,.secondary:disabled{opacity:.35;cursor:not-allowed}
+    .secondary{background:rgba(31,39,35,.07);color:var(--ink)}
+    .button-row{display:flex;gap:10px;flex-wrap:wrap}
+    .button-row>*{flex:1;min-width:150px}
+
+    .panel{
+      background:rgba(255,253,248,.72);border:1px solid rgba(31,39,35,.09);
+      border-radius:var(--radius);padding:22px;box-shadow:0 12px 36px rgba(31,39,35,.06);
+    }
+    label{display:block;font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;opacity:.6;margin:0 0 7px}
+    input,textarea{
+      width:100%;border:1px solid rgba(31,39,35,.13);background:rgba(255,255,255,.72);color:var(--ink);
+      border-radius:16px;padding:14px 15px;outline:none;
+    }
+    input:focus,textarea:focus{border-color:rgba(31,45,39,.42);box-shadow:0 0 0 3px rgba(31,45,39,.07)}
+    .field{margin-bottom:16px}
+    .tiny{font-size:12px;line-height:1.45;opacity:.62}
+    .custom-list{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 0}
+    .chip{
+      border:1px solid var(--line);background:rgba(255,255,255,.55);border-radius:999px;padding:7px 10px;font-size:13px;
+    }
+
+    .handoff{justify-content:center;text-align:center;padding:7vh 8px}
+    .seal{
+      width:82px;height:82px;border-radius:50%;margin:0 auto 26px;border:1px solid rgba(178,139,87,.45);
+      display:grid;place-items:center;color:var(--brass);font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:34px;
+      background:rgba(255,253,248,.66);
+    }
+
+    .game-head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;margin-bottom:12px}
+    .round-badge{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.58}
+    .progress{height:5px;background:rgba(31,39,35,.09);border-radius:999px;overflow:hidden}
+    .progress>span{display:block;height:100%;width:0;background:var(--brass);transition:width .25s ease}
+    .counter{font-variant-numeric:tabular-nums;font-size:13px;opacity:.58}
+    .round-copy{text-align:center;margin:8px 0 16px}
+    .round-copy strong{font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:24px;font-weight:500}
+    .round-copy span{display:block;font-size:13px;opacity:.58;margin-top:3px}
+
+    .deck-wrap{position:relative;flex:1;min-height:420px;display:grid;place-items:center;padding:5px 0 14px}
+    .behind{
+      position:absolute;width:min(94%,440px);height:min(64vh,520px);max-height:520px;min-height:390px;
+      border-radius:32px;background:rgba(255,253,248,.62);border:1px solid rgba(31,39,35,.07);
+      transform:translateY(10px) scale(.96);
+    }
+    .value-card{
+      position:relative;z-index:2;width:min(94%,440px);height:min(64vh,520px);max-height:520px;min-height:390px;
+      background:linear-gradient(145deg,#fffdfa 0%,#f8f1e7 100%);
+      border-radius:32px;border:1px solid rgba(31,39,35,.08);box-shadow:var(--shadow);
+      display:flex;flex-direction:column;justify-content:space-between;padding:28px 28px 26px;
+      touch-action:none;user-select:none;will-change:transform;transition:transform .24s ease,opacity .24s ease;
+    }
+    .value-card.dragging{transition:none}
+    .card-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .ordinal{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.42}
+    .spark{width:34px;height:34px;border-radius:50%;border:1px solid rgba(178,139,87,.32);display:grid;place-items:center;color:var(--brass)}
+    .value-title{
+      font-family:Iowan Old Style,Baskerville,Georgia,serif;
+      font-size:clamp(44px,12vw,64px);line-height:.96;font-weight:500;letter-spacing:-.035em;margin:10px 0 18px;
+      word-break:break-word;
+    }
+    .value-desc{font-size:18px;line-height:1.5;color:rgba(31,39,35,.68);max-width:340px}
+    .card-foot{display:flex;justify-content:space-between;align-items:end;gap:16px}
+    .prompt{font-size:12px;line-height:1.4;max-width:220px;opacity:.46}
+    .gesture{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.38}
+
+    .decision-halo{
+      position:absolute;inset:0;border-radius:32px;pointer-events:none;opacity:0;transition:opacity .08s ease;
+    }
+    .decision-label{
+      position:absolute;top:28px;z-index:3;border-radius:999px;padding:9px 13px;font-weight:900;font-size:12px;
+      letter-spacing:.10em;text-transform:uppercase;opacity:0;pointer-events:none;
+    }
+    .decision-label.release{left:22px;color:var(--rose);border:1px solid rgba(166,103,96,.35);transform:rotate(-5deg)}
+    .decision-label.keep{right:22px;color:var(--forest-2);border:1px solid rgba(52,71,61,.35);transform:rotate(5deg)}
+
+    .controls{display:grid;grid-template-columns:58px 1fr 1fr 58px;gap:10px;align-items:center;margin-top:4px}
+    .round-btn{
+      width:58px;height:58px;border-radius:50%;border:1px solid rgba(31,39,35,.11);background:rgba(255,253,248,.62);
+      color:var(--ink);font-size:20px;
+    }
+    .choice{
+      min-height:58px;border-radius:999px;border:1px solid rgba(31,39,35,.09);font-weight:800;background:rgba(255,253,248,.75);
+      color:var(--ink);display:flex;justify-content:center;align-items:center;gap:8px;
+    }
+    .choice.keep{background:var(--forest);color:white}
+    .choice:disabled,.round-btn:disabled{opacity:.3}
+
+    .round-end{justify-content:center;text-align:center;padding:5vh 4px}
+    .number{
+      font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:96px;line-height:.9;color:var(--forest);margin:10px 0 18px;
+    }
+    .preview-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin:20px 0 28px}
+    .preview-chips span{border:1px solid var(--line);background:rgba(255,255,255,.56);padding:8px 11px;border-radius:999px;font-size:13px}
+
+    .reveal{justify-content:center;text-align:center;padding:5vh 0}
+    .final-kicker{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;opacity:.5;margin-bottom:10px}
+    .final-name{font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:44px;margin-bottom:22px}
+    .final-three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+    .final-card{
+      min-height:220px;border-radius:24px;padding:18px 14px;background:linear-gradient(145deg,#fffdfa,#eee5d7);
+      border:1px solid rgba(31,39,35,.08);box-shadow:0 14px 32px rgba(31,39,35,.09);
+      display:flex;flex-direction:column;justify-content:space-between;text-align:left;
+    }
+    .final-card:nth-child(2){transform:translateY(-8px)}
+    .final-card .num{font-size:11px;opacity:.38}
+    .final-card .word{
+      font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:clamp(22px,6vw,34px);line-height:1;word-break:break-word;
+    }
+    .final-card .small-desc{font-size:11px;line-height:1.35;opacity:.52}
+    .final-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:24px}
+    .final-actions>*{flex:1;min-width:130px}
+    .conversation{
+      margin-top:24px;text-align:left;background:rgba(255,253,248,.57);border:1px solid rgba(31,39,35,.09);border-radius:24px;padding:20px;
+    }
+    .conversation h3{font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:24px;font-weight:500;margin-bottom:10px}
+    .conversation ol{margin:0;padding-left:20px;color:rgba(31,39,35,.72)}
+    .conversation li{margin:9px 0;line-height:1.45}
+
+    .together-grid{display:grid;gap:18px;width:100%}
+    .person-set{border-top:1px solid var(--line);padding-top:16px}
+    .person-set:first-child{border-top:0;padding-top:0}
+    .person-label{text-align:left;font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:25px;margin-bottom:11px}
+    .three-words{display:flex;gap:8px;flex-wrap:wrap}
+    .three-words span{
+      background:rgba(255,253,248,.7);border:1px solid var(--line);border-radius:999px;padding:10px 13px;
+      font-family:Iowan Old Style,Baskerville,Georgia,serif;font-size:19px;
+    }
+    .overlap{margin:20px 0 0;border-radius:18px;padding:14px;background:rgba(178,139,87,.10);font-size:14px;line-height:1.5}
+
+    .screenshot-mode .brand,.screenshot-mode .final-actions,.screenshot-mode .conversation{display:none!important}
+    .screenshot-mode .reveal{padding-top:8vh}
+    .screenshot-note{display:none;font-size:12px;opacity:.5;margin-top:18px}
+    .screenshot-mode .screenshot-note{display:block}
+
+    .toast{
+      position:fixed;left:50%;bottom:max(22px,env(safe-area-inset-bottom));transform:translate(-50%,16px);
+      background:var(--ink);color:white;padding:11px 14px;border-radius:999px;font-size:13px;opacity:0;pointer-events:none;
+      transition:.2s ease;z-index:20;white-space:nowrap;
+    }
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+
+    .install-tip{margin-top:18px;font-size:12px;line-height:1.45;opacity:.5}
+    @media(max-width:430px){
+      .shell{min-height:calc(100svh - 32px)}
+      .controls{grid-template-columns:48px 1fr 1fr 48px;gap:7px}
+      .round-btn{width:48px;height:48px}
+      .choice{min-height:50px}
+      .final-card{min-height:190px;padding:15px 11px}
+      .final-card .small-desc{display:none}
+    }
+    @media(min-width:760px){
+      .app{padding-top:28px;padding-bottom:28px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    }
+  </style>
+</head>
+<body>
+<div class="app" id="app">
+  <main class="shell">
+    <header class="brand">
+      <div class="brandmark">What Matters</div>
+      <button class="ghost" id="resetTop" hidden>Start over</button>
+    </header>
+
+    <section class="screen active hero" id="welcome">
+      <div class="eyebrow">A values conversation for two</div>
+      <h1>What matters<br>most?</h1>
+      <p class="lead">A quiet little exercise for finding the values that feel most central to each of you — then talking about what they mean.</p>
+      <div class="hero-art" aria-hidden="true">
+        <div class="mini-card">Curiosity</div>
+        <div class="mini-card">Family</div>
+        <div class="mini-card">Courage</div>
+      </div>
+      <button class="primary" id="beginBtn">Begin together</button>
+      <div class="install-tip">Private by design. Your choices stay in this browser on this device.</div>
+    </section>
+
+    <section class="screen" id="setup">
+      <div class="eyebrow">Before you begin</div>
+      <h2>Make it yours.</h2>
+      <p class="muted">You’ll take turns on the same device. Your final three stay hidden until both of you have finished.</p>
+      <div class="panel">
+        <div class="field">
+          <label for="p1">First person</label>
+          <input id="p1" autocomplete="off" placeholder="Name" />
+        </div>
+        <div class="field">
+          <label for="p2">Second person</label>
+          <input id="p2" autocomplete="off" placeholder="Name" />
+        </div>
+        <div class="field">
+          <label for="customValue">Add a value the deck might miss</label>
+          <div style="display:flex;gap:8px">
+            <input id="customValue" autocomplete="off" maxlength="28" placeholder="e.g. Playfulness" />
+            <button class="secondary" id="addCustom" style="flex:0 0 auto;padding-inline:16px">Add</button>
+          </div>
+          <div class="custom-list" id="customList"></div>
+          <div class="tiny" style="margin-top:8px">Optional. Add as many personal words as you like before starting.</div>
+        </div>
+      </div>
+      <div style="height:16px"></div>
+      <button class="primary" id="startBtn">Start the first sort</button>
+      <p class="tiny" style="margin:12px 4px 0">There are no “good” or “bad” values here. Choose what feels most central to you now — not what you think you should choose.</p>
+    </section>
+
+    <section class="screen handoff" id="handoff">
+      <div class="seal" id="handoffInitial">S</div>
+      <div class="eyebrow" id="handoffEyebrow">Your turn</div>
+      <h2 id="handoffTitle">Scott, this one is yours.</h2>
+      <p class="lead" id="handoffCopy" style="margin-left:auto;margin-right:auto">Swipe right to keep a value in play. Swipe left to let it go. You can undo your last choice.</p>
+      <button class="primary" id="handoffBtn">I’m ready</button>
+    </section>
+
+    <section class="screen" id="game">
+      <div class="game-head">
+        <div class="round-badge" id="roundBadge">Level 1</div>
+        <div class="progress"><span id="progressBar"></span></div>
+        <div class="counter" id="cardCounter">1 / 48</div>
+      </div>
+      <div class="round-copy">
+        <strong id="roundGoal">Keep 24</strong>
+        <span id="spotsText">24 places remaining</span>
+      </div>
+
+      <div class="deck-wrap" id="deckWrap">
+        <div class="behind"></div>
+        <article class="value-card" id="valueCard">
+          <div class="decision-label release" id="releaseLabel">Let go</div>
+          <div class="decision-label keep" id="keepLabel">Keep</div>
+          <div class="decision-halo" id="halo"></div>
+          <div class="card-top">
+            <div class="ordinal" id="cardOrdinal">Value 01</div>
+            <div class="spark">✦</div>
+          </div>
+          <div>
+            <div class="value-title" id="valueTitle">Curiosity</div>
+            <div class="value-desc" id="valueDesc">To keep discovering, questioning and learning.</div>
+          </div>
+          <div class="card-foot">
+            <div class="prompt">Choose what feels true, not what sounds admirable.</div>
+            <div class="gesture">← release · keep →</div>
+          </div>
+        </article>
+      </div>
+
+      <div class="controls">
+        <button class="round-btn" id="undoBtn" aria-label="Undo">↶</button>
+        <button class="choice" id="releaseBtn">← Let go</button>
+        <button class="choice keep" id="keepBtn">Keep →</button>
+        <button class="round-btn" id="infoBtn" aria-label="Tip">?</button>
+      </div>
+    </section>
+
+    <section class="screen round-end" id="roundEnd">
+      <div class="eyebrow" id="roundEndEyebrow">Level complete</div>
+      <div class="number" id="roundEndNumber">24</div>
+      <h2 id="roundEndTitle">Still in the running.</h2>
+      <p class="lead" id="roundEndCopy" style="margin-left:auto;margin-right:auto">Next, you’ll choose from these again. The distinctions get harder — that’s the point.</p>
+      <div class="preview-chips" id="roundPreview"></div>
+      <button class="primary" id="nextRoundBtn">Continue</button>
+    </section>
+
+    <section class="screen handoff" id="privateDone">
+      <div class="seal">✓</div>
+      <div class="eyebrow">Safely tucked away</div>
+      <h2 id="privateTitle">Your three are locked in.</h2>
+      <p class="lead" id="privateCopy" style="margin-left:auto;margin-right:auto">They’ll stay hidden. Hand the phone to the other person when you’re ready.</p>
+      <button class="primary" id="passBtn">Pass the phone</button>
+    </section>
+
+    <section class="screen reveal" id="personReveal">
+      <div class="final-kicker">Your three</div>
+      <div class="final-name" id="revealName">Scott</div>
+      <div class="final-three" id="finalThree"></div>
+      <div class="screenshot-note">Screenshot this screen to keep your three.</div>
+      <div class="final-actions">
+        <button class="secondary" id="shotBtn">Screenshot mode</button>
+        <button class="primary" id="nextRevealBtn">See the other three</button>
+      </div>
+    </section>
+
+    <section class="screen reveal" id="togetherReveal">
+      <div class="final-kicker">What matters to us</div>
+      <div class="final-name">Side by side.</div>
+      <div class="together-grid" id="togetherGrid"></div>
+      <div class="overlap" id="overlapBox"></div>
+      <div class="conversation">
+        <h3>Three questions worth lingering on</h3>
+        <ol>
+          <li>What does each of your three look like on an ordinary Tuesday?</li>
+          <li>Where do your values naturally support one another — and where might they pull differently?</li>
+          <li>What is one small thing you could do this month that honours something on the other person’s list?</li>
+        </ol>
+      </div>
+      <div class="screenshot-note">Screenshot this screen to keep the moment.</div>
+      <div class="final-actions">
+        <button class="secondary" id="togetherShotBtn">Screenshot mode</button>
+        <button class="primary" id="finishBtn">Finish</button>
+      </div>
+    </section>
+
+    <section class="screen handoff" id="finish">
+      <div class="seal">✦</div>
+      <div class="eyebrow">That’s it</div>
+      <h2>Keep the conversation, not the score.</h2>
+      <p class="lead" style="margin-left:auto;margin-right:auto">Values can shift with seasons of life. Coming back to this in six or twelve months can be as interesting as doing it the first time.</p>
+      <div class="button-row" style="margin-top:18px">
+        <button class="secondary" id="viewAgainBtn">View our results</button>
+        <button class="primary" id="restartBtn">Do it again</button>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast">Tip</div>
+
+<script>
+const BASE_VALUES = [
+  {name:"Acceptance", desc:"To make room for yourself and others as they are."},
+  {name:"Achievement", desc:"To accomplish things that feel significant and worthwhile."},
+  {name:"Adventure", desc:"To seek novelty, discovery and experiences beyond the familiar."},
+  {name:"Authenticity", desc:"To live in a way that feels genuinely your own."},
+  {name:"Autonomy", desc:"To choose your own direction and act with independence."},
+  {name:"Balance", desc:"To make space for the different parts of a good life."},
+  {name:"Beauty", desc:"To notice, create and be moved by what is beautiful."},
+  {name:"Belonging", desc:"To feel part of a group, place or community."},
+  {name:"Caring", desc:"To look after the people who depend on or matter to you."},
+  {name:"Challenge", desc:"To stretch yourself through demanding goals and problems."},
+  {name:"Comfort", desc:"To have ease, rest and enough material security to breathe."},
+  {name:"Commitment", desc:"To stand by meaningful promises over time."},
+  {name:"Compassion", desc:"To respond to suffering with warmth and concern."},
+  {name:"Connection", desc:"To feel emotionally close and known by others."},
+  {name:"Contribution", desc:"To leave people, places or systems better than you found them."},
+  {name:"Cooperation", desc:"To work with others rather than only for yourself."},
+  {name:"Courage", desc:"To act in line with what matters despite fear or uncertainty."},
+  {name:"Creativity", desc:"To make, imagine and express something original."},
+  {name:"Curiosity", desc:"To keep discovering, questioning and learning."},
+  {name:"Dependability", desc:"To be someone others can reliably count on."},
+  {name:"Discipline", desc:"To follow through with focus even when motivation fades."},
+  {name:"Equality", desc:"To support equal dignity, opportunity and consideration."},
+  {name:"Excellence", desc:"To do things with care and pursue a high standard."},
+  {name:"Fairness", desc:"To make decisions impartially and give people their due."},
+  {name:"Family", desc:"To invest deeply in family bonds and shared life."},
+  {name:"Freedom", desc:"To have room to choose, move and live without needless constraint."},
+  {name:"Friendship", desc:"To build loyal, enjoyable and enduring friendships."},
+  {name:"Fun", desc:"To make room for play, laughter and uncomplicated enjoyment."},
+  {name:"Growth", desc:"To keep developing who you are and what you can do."},
+  {name:"Health", desc:"To care for physical and mental wellbeing."},
+  {name:"Honesty", desc:"To be truthful, transparent and sincere."},
+  {name:"Hope", desc:"To orient toward possibility and a better future."},
+  {name:"Humility", desc:"To keep perspective on yourself and remain open to learning."},
+  {name:"Influence", desc:"To shape decisions, outcomes or the direction of a group."},
+  {name:"Inner peace", desc:"To cultivate calm, steadiness and freedom from needless turmoil."},
+  {name:"Justice", desc:"To challenge unfairness and support what is right in society."},
+  {name:"Kindness", desc:"To treat people with generosity, patience and warmth."},
+  {name:"Knowledge", desc:"To understand deeply and build a rich grasp of the world."},
+  {name:"Leadership", desc:"To guide, organise and take responsibility for direction."},
+  {name:"Learning", desc:"To keep acquiring skills, insight and understanding."},
+  {name:"Love", desc:"To give and receive deep affection and devotion."},
+  {name:"Loyalty", desc:"To remain faithful to people and groups you have chosen."},
+  {name:"Meaning", desc:"To experience your life as coherent and significant."},
+  {name:"Nature", desc:"To live with appreciation and care for the natural world."},
+  {name:"Openness", desc:"To stay receptive to perspectives, people and possibilities."},
+  {name:"Pleasure", desc:"To savour enjoyment, delight and sensory experience."},
+  {name:"Prosperity", desc:"To build financial resources, options and material abundance."},
+  {name:"Purpose", desc:"To direct your life toward something that feels worth serving."},
+  {name:"Recognition", desc:"To have your efforts, abilities or identity noticed and valued."},
+  {name:"Respect", desc:"To give and receive consideration, dignity and regard."},
+  {name:"Responsibility", desc:"To own your choices, duties and their consequences."},
+  {name:"Security", desc:"To protect safety, predictability and stability for yourself and others."},
+  {name:"Self-expression", desc:"To show your ideas, feelings and identity openly."},
+  {name:"Service", desc:"To use your time and abilities in support of others."},
+  {name:"Simplicity", desc:"To reduce excess and focus on what is essential."},
+  {name:"Spirituality", desc:"To connect with the sacred, transcendent or deeply meaningful."},
+  {name:"Stability", desc:"To build continuity, order and dependable foundations."},
+  {name:"Tradition", desc:"To preserve practices and customs that carry meaning across time."},
+  {name:"Trust", desc:"To build relationships where people can rely on one another."},
+  {name:"Wisdom", desc:"To apply experience and judgment to what truly matters."}
+];
+
+// Default is a carefully balanced 48-card subset. The remaining cards are used in the expanded pool
+// when custom values are added, preserving breadth without making the first run too long.
+const DEFAULT_NAMES = [
+ "Acceptance","Achievement","Adventure","Authenticity","Autonomy","Balance","Belonging","Caring",
+ "Challenge","Comfort","Commitment","Compassion","Connection","Contribution","Courage","Creativity",
+ "Curiosity","Dependability","Equality","Excellence","Fairness","Family","Freedom","Friendship",
+ "Fun","Growth","Health","Honesty","Humility","Influence","Inner peace","Justice","Kindness","Learning",
+ "Love","Loyalty","Meaning","Nature","Pleasure","Prosperity","Purpose","Recognition","Respect",
+ "Responsibility","Security","Spirituality","Tradition","Wisdom"
+];
+
+const $ = s => document.querySelector(s);
+const screens = [...document.querySelectorAll(".screen")];
+const state = {
+  names:["",""],
+  custom:[],
+  player:0,
+  deck:[],
+  round:0,
+  targets:[],
+  roundDeck:[],
+  index:0,
+  kept:[],
+  history:[],
+  results:[null,null],
+  revealIndex:0
+};
+
+function show(id){
+  screens.forEach(s=>s.classList.toggle("active", s.id===id));
+  $("#resetTop").hidden = ["welcome","setup"].includes(id);
+  window.scrollTo({top:0,behavior:"instant"});
+  save();
+}
+function shuffle(a){
+  const x=[...a];
+  for(let i=x.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [x[i],x[j]]=[x[j],x[i]];
+  }
+  return x;
+}
+function toast(msg){
+  const t=$("#toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove("show"),2200);
+}
+function targetsFor(n){
+  const a=Math.ceil(n/2);
+  const b=Math.ceil(n/4);
+  return [a,b,6,3].map((v,i,arr)=>{
+    if(i===0) return Math.min(v,n-1);
+    return Math.min(v,arr[i-1]-1);
+  }).filter((v,i,arr)=>v>=3 && (i===0 || v<arr[i-1]));
+}
+function currentTarget(){ return state.targets[state.round]; }
+function save(){
+  try{ localStorage.setItem("whatMattersState",JSON.stringify(state)); }catch(e){}
+}
+function clearSave(){ try{localStorage.removeItem("whatMattersState")}catch(e){} }
+
+function buildBaseDeck(){
+  const map=new Map(BASE_VALUES.map(v=>[v.name,v]));
+  const deck=DEFAULT_NAMES.map(n=>map.get(n));
+  const custom=state.custom.map(name=>({name,desc:"A value you added because it matters in your own words.",custom:true}));
+  return [...deck,...custom];
+}
+
+$("#beginBtn").onclick=()=>show("setup");
+$("#addCustom").onclick=addCustom;
+$("#customValue").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();addCustom()}});
+function addCustom(){
+  const input=$("#customValue");
+  const name=input.value.trim().replace(/\s+/g," ");
+  if(!name)return;
+  if(state.custom.some(x=>x.toLowerCase()===name.toLowerCase()) || BASE_VALUES.some(x=>x.name.toLowerCase()===name.toLowerCase())){
+    toast("That value is already in the deck."); return;
+  }
+  state.custom.push(name); input.value=""; renderCustom(); save();
+}
+function renderCustom(){
+  const c=$("#customList"); c.innerHTML="";
+  state.custom.forEach((name,i)=>{
+    const b=document.createElement("button");
+    b.className="chip"; b.textContent=name+" ×"; b.title="Remove";
+    b.onclick=()=>{state.custom.splice(i,1);renderCustom();save()};
+    c.appendChild(b);
+  });
+}
+$("#startBtn").onclick=()=>{
+  const n1=$("#p1").value.trim() || "Person one";
+  const n2=$("#p2").value.trim() || "Person two";
+  state.names=[n1,n2]; state.player=0; state.results=[null,null]; state.revealIndex=0;
+  preparePlayer();
+};
+function preparePlayer(){
+  state.deck=shuffle(buildBaseDeck());
+  state.targets=targetsFor(state.deck.length);
+  state.round=0; state.roundDeck=[...state.deck]; state.index=0; state.kept=[]; state.history=[];
+  const name=state.names[state.player];
+  $("#handoffInitial").textContent=(name[0]||"•").toUpperCase();
+  $("#handoffEyebrow").textContent=state.player===0?"First turn":"Second turn";
+  $("#handoffTitle").textContent=`${name}, this one is yours.`;
+  $("#handoffCopy").textContent=state.player===0
+    ?"Swipe right to keep a value in play. Swipe left to let it go. You can undo your last choice."
+    :"The first person’s choices are hidden. This is your own sort — there’s nothing to match.";
+  $("#handoffBtn").textContent="I’m ready";
+  show("handoff");
+}
+$("#handoffBtn").onclick=()=>startRound();
+
+function startRound(){
+  state.index=0; state.kept=[]; state.history=[];
+  if(state.round>0) state.roundDeck=shuffle([...state.roundDeck]);
+  renderCard(); show("game");
+}
+function renderCard(){
+  const total=state.roundDeck.length;
+  if(state.index>=total){ completeRound(); return; }
+  const card=state.roundDeck[state.index];
+  const target=currentTarget();
+  const places=target-state.kept.length;
+  const remaining=total-state.index;
+  $("#roundBadge").textContent=`Level ${state.round+1} of ${state.targets.length}`;
+  $("#roundGoal").textContent=`Choose ${target}`;
+  $("#spotsText").textContent=`${places} ${places===1?"place":"places"} remaining`;
+  $("#cardCounter").textContent=`${state.index+1} / ${total}`;
+  $("#progressBar").style.width=`${(state.index/total)*100}%`;
+  $("#cardOrdinal").textContent=`Value ${String(state.index+1).padStart(2,"0")}`;
+  $("#valueTitle").textContent=card.name;
+  $("#valueDesc").textContent=card.desc;
+  const mustKeep=remaining===places;
+  const keepFull=places<=0;
+  $("#keepBtn").disabled=keepFull;
+  $("#releaseBtn").disabled=mustKeep;
+  $("#undoBtn").disabled=state.history.length===0;
+  $("#valueCard").style.transform="";
+  $("#valueCard").style.opacity="1";
+  $("#keepLabel").style.opacity=0; $("#releaseLabel").style.opacity=0; $("#halo").style.opacity=0;
+  if(mustKeep) $("#spotsText").textContent=`${places} remaining · these final choices stay`;
+  save();
+}
+
+function decide(keep, viaSwipe=false){
+  if(state.index>=state.roundDeck.length)return;
+  const total=state.roundDeck.length, target=currentTarget(), places=target-state.kept.length, remaining=total-state.index;
+  const mustKeep=remaining===places, keepFull=places<=0;
+  if(keep && keepFull){toast("Your shortlist for this level is full.");return}
+  if(!keep && mustKeep){toast("Keep the remaining values to fill this level.");return}
+  const card=state.roundDeck[state.index];
+  state.history.push({index:state.index,keptBefore:[...state.kept],card});
+  if(keep) state.kept.push(card);
+  animateDecision(keep,()=>{state.index++;renderCard()});
+}
+function animateDecision(keep,cb){
+  const el=$("#valueCard");
+  el.style.transform=`translateX(${keep?520:-520}px) rotate(${keep?12:-12}deg)`;
+  el.style.opacity=".1";
+  setTimeout(cb,190);
+}
+$("#keepBtn").onclick=()=>decide(true);
+$("#releaseBtn").onclick=()=>decide(false);
+$("#undoBtn").onclick=()=>{
+  const h=state.history.pop(); if(!h)return;
+  state.index=h.index; state.kept=[...h.keptBefore]; renderCard(); toast("Last choice undone.");
+};
+$("#infoBtn").onclick=()=>toast("Right keeps it in play. Left lets it go for this run.");
+
+let startX=0,startY=0,dragging=false,dx=0;
+const vc=$("#valueCard");
+vc.addEventListener("pointerdown",e=>{
+  if(e.pointerType==="mouse" && e.button!==0)return;
+  dragging=true; startX=e.clientX; startY=e.clientY; dx=0; vc.classList.add("dragging"); vc.setPointerCapture?.(e.pointerId);
+});
+vc.addEventListener("pointermove",e=>{
+  if(!dragging)return;
+  dx=e.clientX-startX;
+  const dy=e.clientY-startY;
+  if(Math.abs(dy)>Math.abs(dx)*1.3 && Math.abs(dy)>22)return;
+  const rot=dx/24;
+  vc.style.transform=`translateX(${dx}px) rotate(${rot}deg)`;
+  const p=Math.min(Math.abs(dx)/110,1);
+  if(dx>0){
+    $("#keepLabel").style.opacity=p; $("#releaseLabel").style.opacity=0;
+    $("#halo").style.opacity=p*.35; $("#halo").style.boxShadow="inset 0 0 0 3px rgba(52,71,61,.35)";
+  }else{
+    $("#releaseLabel").style.opacity=p; $("#keepLabel").style.opacity=0;
+    $("#halo").style.opacity=p*.35; $("#halo").style.boxShadow="inset 0 0 0 3px rgba(166,103,96,.35)";
+  }
+});
+function endDrag(){
+  if(!dragging)return; dragging=false; vc.classList.remove("dragging");
+  const threshold=Math.min(105,window.innerWidth*.22);
+  if(dx>threshold && !$("#keepBtn").disabled){decide(true,true);return}
+  if(dx<-threshold && !$("#releaseBtn").disabled){decide(false,true);return}
+  vc.style.transform=""; $("#keepLabel").style.opacity=0; $("#releaseLabel").style.opacity=0; $("#halo").style.opacity=0;
+}
+vc.addEventListener("pointerup",endDrag); vc.addEventListener("pointercancel",endDrag);
+
+window.addEventListener("keydown",e=>{
+  if(!$("#game").classList.contains("active"))return;
+  if(e.key==="ArrowRight")decide(true);
+  if(e.key==="ArrowLeft")decide(false);
+  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="z")$("#undoBtn").click();
+});
+
+function completeRound(){
+  $("#progressBar").style.width="100%";
+  const target=currentTarget();
+  state.roundDeck=[...state.kept];
+  $("#roundEndEyebrow").textContent=`Level ${state.round+1} complete`;
+  $("#roundEndNumber").textContent=target;
+  const last=state.round===state.targets.length-1;
+  $("#roundEndTitle").textContent=last?"Your three.":"Still in the running.";
+  $("#roundEndCopy").textContent=last
+    ?"These are the values that survived every round. Take a second before locking them in."
+    :"You’ll choose from these again. The distinctions get harder — that’s the point.";
+  const pv=$("#roundPreview"); pv.innerHTML="";
+  state.kept.forEach(v=>{const s=document.createElement("span");s.textContent=v.name;pv.appendChild(s)});
+  $("#nextRoundBtn").textContent=last?"Lock in my three":"Continue";
+  show("roundEnd");
+}
+$("#nextRoundBtn").onclick=()=>{
+  const last=state.round===state.targets.length-1;
+  if(last){
+    state.results[state.player]=[...state.roundDeck];
+    if(state.player===0){
+      $("#privateTitle").textContent=`${state.names[0]}, your three are locked in.`;
+      $("#privateCopy").textContent=`They’ll stay hidden. Hand the phone to ${state.names[1]} when you’re ready.`;
+      show("privateDone");
+    }else{
+      beginReveal();
+    }
+  }else{
+    state.round++; startRound();
+  }
+};
+$("#passBtn").onclick=()=>{state.player=1;preparePlayer()};
+
+function beginReveal(){
+  state.revealIndex=0;
+  renderPersonReveal(0);
+}
+function renderPersonReveal(i){
+  state.revealIndex=i;
+  $("#revealName").textContent=state.names[i];
+  const wrap=$("#finalThree"); wrap.innerHTML="";
+  state.results[i].forEach((v,idx)=>{
+    const d=document.createElement("div"); d.className="final-card";
+    d.innerHTML=`<div class="num">0${idx+1}</div><div class="word"></div><div class="small-desc"></div>`;
+    d.querySelector(".word").textContent=v.name;
+    d.querySelector(".small-desc").textContent=v.desc;
+    wrap.appendChild(d);
+  });
+  $("#nextRevealBtn").textContent=i===0?`See ${state.names[1]}’s three`:"See us together";
+  document.body.classList.remove("screenshot-mode");
+  show("personReveal");
+}
+$("#nextRevealBtn").onclick=()=>{
+  if(state.revealIndex===0) renderPersonReveal(1);
+  else renderTogether();
+};
+function renderTogether(){
+  const g=$("#togetherGrid"); g.innerHTML="";
+  [0,1].forEach(i=>{
+    const set=document.createElement("div"); set.className="person-set";
+    const label=document.createElement("div");label.className="person-label";label.textContent=state.names[i];
+    const words=document.createElement("div");words.className="three-words";
+    state.results[i].forEach(v=>{const s=document.createElement("span");s.textContent=v.name;words.appendChild(s)});
+    set.append(label,words);g.appendChild(set);
+  });
+  const a=new Set(state.results[0].map(v=>v.name.toLowerCase()));
+  const shared=state.results[1].filter(v=>a.has(v.name.toLowerCase())).map(v=>v.name);
+  $("#overlapBox").textContent=shared.length
+    ? `Shared value${shared.length>1?"s":""}: ${shared.join(", ")}. The interesting part is whether the same word means the same thing to each of you.`
+    : "No exact overlap — which can make the conversation even more useful. Look for values that complement one another rather than only identical words.";
+  document.body.classList.remove("screenshot-mode");
+  show("togetherReveal");
+}
+$("#shotBtn").onclick=()=>toggleShot($("#shotBtn"));
+$("#togetherShotBtn").onclick=()=>toggleShot($("#togetherShotBtn"));
+function toggleShot(btn){
+  const on=document.body.classList.toggle("screenshot-mode");
+  btn.textContent=on?"Exit screenshot mode":"Screenshot mode";
+  if(on) toast("Interface hidden — take your screenshot.");
+}
+$("#finishBtn").onclick=()=>{document.body.classList.remove("screenshot-mode");show("finish")};
+$("#viewAgainBtn").onclick=()=>renderTogether();
+$("#restartBtn").onclick=resetAll;
+$("#resetTop").onclick=()=>{if(confirm("Start over and clear this session?"))resetAll()};
+function resetAll(){
+  clearSave();
+  Object.assign(state,{names:["",""],custom:[],player:0,deck:[],round:0,targets:[],roundDeck:[],index:0,kept:[],history:[],results:[null,null],revealIndex:0});
+  $("#p1").value="";$("#p2").value="";renderCustom();document.body.classList.remove("screenshot-mode");show("welcome");
+}
+
+// Do not auto-resume into a private person's in-progress sort on page load.
+// Restore only setup custom values and completed results where safe.
+try{
+  const saved=JSON.parse(localStorage.getItem("whatMattersState")||"null");
+  if(saved && Array.isArray(saved.custom)) {
+    state.custom=saved.custom;
+    renderCustom();
+  }
+}catch(e){}
+
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+}
+</script>
+</body>
+</html>
